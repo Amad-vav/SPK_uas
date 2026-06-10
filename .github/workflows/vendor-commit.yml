@@ -1,0 +1,51 @@
+name: Install & Commit Vendor for Vercel
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'composer.json'
+      - 'composer.lock'
+
+jobs:
+  install-vendor:
+    runs-on: ubuntu-latest
+    # Hanya jalankan jika vendor/ belum ada di repo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Check if vendor exists in repo
+        id: check_vendor
+        run: |
+          if [ -d "vendor" ] && [ -f "vendor/autoload.php" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Composer Install
+        if: steps.check_vendor.outputs.exists == 'false'
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Remove /vendor from .gitignore
+        if: steps.check_vendor.outputs.exists == 'false'
+        run: |
+          sed -i 's|^/vendor$|#/vendor|' .gitignore
+
+      - name: Commit vendor/
+        if: steps.check_vendor.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add vendor .gitignore
+          git commit -m "ci: add vendor/ for Vercel serverless deployment"
+          git push
