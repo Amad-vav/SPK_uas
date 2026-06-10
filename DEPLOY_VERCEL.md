@@ -38,6 +38,12 @@ Repo sudah dikonfigurasi untuk Vercel dengan PHP serverless dan build asset Vite
 Jika build sukses, buka URL yang diberikan Vercel.
 
 Jika masih muncul error:
-- pastikan `vendor/` ada di repo atau gunakan workflow `.github/workflows/vendor-commit.yml`
+- pastikan `vendor/` sudah dikomit ke repo; Vercel tidak selalu punya PHP composer saat build
+- jika belum, jalankan di lokal:
+  ```bash
+git add vendor
+git commit -m "Add vendor for Vercel deployment"
+git push origin main
+```
 - kirimkan log error Vercel dari halaman Deployments
 - saya akan bantu perbaiki langsung
