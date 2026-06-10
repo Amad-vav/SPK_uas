@@ -9,12 +9,14 @@ Repo sudah dikonfigurasi untuk Vercel dengan PHP serverless dan build asset Vite
 3. Pilih repo `UAS_spk`.
 4. Pastikan Vercel mendeteksi project sebagai Node + PHP, lalu `Import`.
 5. Gunakan `main` sebagai branch deploy.
-6. Pastikan build command tidak diubah jika Vercel meminta; config repo sudah memanggil `npm install && npm run build`.
+6. Jika Vercel meminta Build Command, gunakan:
+   - `npm install && npm run build`
+   - Output Directory: `public`
 7. Jalankan deploy.
 
 ## Kunci konfigurasi
 
-- `vercel.json` sudah membaca `api/index.php` sebagai fungsi PHP dan membangun `public` sebagai static assets.
+- `vercel.json` sudah membaca `api/index.php` sebagai fungsi PHP.
 - `api/index.php` sekarang mengatur default serverless env:
   - `APP_ENV=production`
   - `APP_DEBUG=false`
@@ -36,5 +38,6 @@ Repo sudah dikonfigurasi untuk Vercel dengan PHP serverless dan build asset Vite
 Jika build sukses, buka URL yang diberikan Vercel.
 
 Jika masih muncul error:
+- pastikan `vendor/` ada di repo atau gunakan workflow `.github/workflows/vendor-commit.yml`
 - kirimkan log error Vercel dari halaman Deployments
 - saya akan bantu perbaiki langsung
