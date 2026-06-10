@@ -41,6 +41,14 @@ try {
         putenv('APP_KEY=base64:'.$randomKey);
     }
 
+    // Auto-detect APP_URL from the incoming request (fixes route() generating wrong URLs in Vercel)
+    if (!getenv('APP_URL') || getenv('APP_URL') === 'http://localhost') {
+        $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        putenv('APP_URL=' . $scheme . '://' . $host);
+        $_ENV['APP_URL'] = $scheme . '://' . $host;
+    }
+
     if (!getenv('DB_CONNECTION')) {
         putenv('DB_CONNECTION=sqlite');
     }
