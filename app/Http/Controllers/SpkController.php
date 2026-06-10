@@ -49,6 +49,23 @@ class SpkController extends Controller
         }
 
         $campaign = Campaign::findOrFail($campaign_id);
+        $influencers = Influencer::where('campaign_id', $campaign_id)->get();
+
+        if ($influencers->isEmpty()) {
+            return redirect()->route('influencer.manage')->with('error', 'Tambahkan minimal satu influencer');
+        }
+
+        return view('spk.result', compact('campaign'));
+    }
+
+    public function sawResult()
+    {
+        $campaign_id = session('campaign_id');
+        if (!$campaign_id) {
+            return redirect()->route('campaign.index')->with('error', 'Silakan pilih kampanye terlebih dahulu');
+        }
+
+        $campaign = Campaign::findOrFail($campaign_id);
         $criterias = Criteria::all();
         $influencers = Influencer::where('campaign_id', $campaign_id)->get();
 
@@ -59,7 +76,7 @@ class SpkController extends Controller
         // Hitung SAW
         $sawResults = $this->calculateSAW($criterias, $influencers);
 
-        return view('spk.result', compact('campaign', 'criterias', 'influencers', 'sawResults'));
+        return view('spk.saw', compact('campaign', 'criterias', 'influencers', 'sawResults'));
     }
 
     private function calculateSAW($criterias, $influencers)

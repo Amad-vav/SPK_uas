@@ -20,6 +20,14 @@ class Influencer extends Model
         'nilai_c5',
     ];
 
+    protected $casts = [
+        'nilai_c1' => 'float',
+        'nilai_c2' => 'integer',
+        'nilai_c3' => 'integer',
+        'nilai_c4' => 'integer',
+        'nilai_c5' => 'integer',
+    ];
+
     public function campaign()
     {
         return $this->belongsTo(Campaign::class);

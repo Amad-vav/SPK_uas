@@ -23,3 +23,5 @@ Route::delete('/influencer/{id}', [InfluencerController::class, 'destroy'])->nam
 
 // SPK Result
 Route::get('/spk/result', [SpkController::class, 'result'])->name('spk.result');
+Route::get('/spk/result/saw', [SpkController::class, 'sawResult'])->name('spk.result.saw');
+

@@ -13,9 +13,11 @@
         :root{
             --primary:#10B981;
             --primary-dark:#059669;
+            --primary-emerald:#10B981;
             --secondary:#0F172A;
             --secondary-light:#1E293B;
             --gold:#F59E0B;
+            --warm-ochre:#F59E0B;
         }
 
         *{
